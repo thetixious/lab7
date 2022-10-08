@@ -9,6 +9,7 @@ import java.util.HashMap;
  */
 public class CommandPool {
     public CommandPool() {
+
         upload(new AddCommand());
         upload(new HelpCommand());
         upload(new InfoCommand());
