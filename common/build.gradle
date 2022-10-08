@@ -1,0 +1,14 @@
+plugins {
+    id 'java'
+}
+
+
+
+dependencies {
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+    implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+    //implementation 'com.fasterxml:jackson-xml-databind:0.6.2'
+    //implementation project(":client")
+    //implementation project(":server")
+}
+
