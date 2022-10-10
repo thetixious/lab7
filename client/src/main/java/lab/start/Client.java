@@ -1,16 +1,11 @@
 package lab.start;
 
 
-import commands.*;
-import data.SpaceMarine;
+
 import exeptions.EmptyElement;
 import exeptions.IncorrectData;
 import lab.utility.ConsoleManager;
-import utility.CollectionManager;
-import utility.CollectionSerializer;
-import utility.CommandPool;
-import utility.MessageSerializer;
-
+import utility.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -20,7 +15,6 @@ import java.net.UnknownHostException;
 import java.nio.channels.DatagramChannel;
 import java.util.Objects;
 import java.util.Scanner;
-import java.util.Stack;
 
 /**
  * Main application class that loads all commands and initializes instances
@@ -35,6 +29,8 @@ import java.util.Stack;
 public class Client extends AbstractClient {
 
     private final static Integer DEFAULT_PORT = 4587;
+    private static final VarSetter setter = new VarSetter();
+
     CommandPool commandPool;
     ConsoleManager consoleManager;
     PrintWriter writer = new PrintWriter(System.out, true);
@@ -66,12 +62,9 @@ public class Client extends AbstractClient {
         collectionManager.startSetId(); //устанавливает множество id
     }
 
-    public static void onStop() {
-        AbstractClient.onStop();
-    }
 
     @Override
-    public void run()  {
+    public void run() {
         try {
             String input = new Scanner(System.in).nextLine();
             consoleManager.action(input);
@@ -80,7 +73,7 @@ public class Client extends AbstractClient {
         }
     }
 
-    public void setPath() throws IncorrectData{
+    public void setPath() throws IncorrectData {
         path = System.getenv("parsPath");
         if (Objects.equals(path, null)) {
             ioManager.printerr("файл не обнаружен");
@@ -88,7 +81,7 @@ public class Client extends AbstractClient {
         }
     }
 
-    public void setCollectionManager(){
+    public void setCollectionManager() {
         try {
             collectionManager = new CollectionManager(commandPool, collectionSerializer, collectionSerializer.collectionDeserializer());
         } catch (IOException e) {
@@ -99,28 +92,16 @@ public class Client extends AbstractClient {
 
     public void setConnectionStuff() {
         try {
-            serverAddr = new InetSocketAddress(getHost(), DEFAULT_PORT);
+            serverAddr = new InetSocketAddress(setter.getHost(), DEFAULT_PORT);
             client = DatagramChannel.open();
             client.configureBlocking(false);
-            sendManager = new SendManager(client, serverAddr,messageSerializer);
+            sendManager = new SendManager(client, serverAddr, messageSerializer);
             receiveManager = new ReceiveManager(client, messageSerializer);
         } catch (UnknownHostException e) {
             e.printStackTrace(); //never throw
         } catch (IOException e) {
             e.printStackTrace(); //never throw
         }
-    }
-
-    public InetAddress getHost() throws UnknownHostException {
-        try {
-            if (Objects.equals(System.getenv("host"), null)) {
-                return InetAddress.getLocalHost();
-            } else
-                return InetAddress.getByName(System.getenv("host"));
-        } catch (UnknownHostException e) {
-            ioManager.printerr("Unknown host" + "\n" + "Set local host");
-        }
-        return InetAddress.getLocalHost();
     }
 
 }

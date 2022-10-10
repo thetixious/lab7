@@ -6,6 +6,7 @@ import exeptions.EmptyElement;
 import exeptions.IncorrectData;
 
 import java.io.Serializable;
+import java.util.concurrent.ForkJoinTask;
 
 public class Message implements Serializable {
     private Command command;

@@ -4,25 +4,29 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
+import java.net.*;
 
 public class SendManager {
     private DatagramSocket client;
     private DatagramPacket packet;
+    private SocketAddress address;
 
     private final int buffSize = 906;
 
-    public SendManager(DatagramSocket client) {
+    public SendManager(DatagramSocket client, InetSocketAddress addres) {
         this.client = client;
+        this.address = addres;
     }
 
-    public void sendMessage(CommandResult result, Integer port, InetAddress addr) throws IOException {
+    public void sendMessage(CommandResult result)  {
+        try{
         System.out.println(result);
         byte[] buf = serialize(result);
-        packet = new DatagramPacket(buf,buf.length,addr,port);
+        packet = new DatagramPacket(buf,buf.length,address);
         client.send(packet);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
     }
 

@@ -14,6 +14,7 @@ public class ReceiveManager {
     private Message message;
     private InetAddress addr;
     private Integer port;
+    private InetSocketAddress addres;
 
     private DatagramPacket inputPacket;
 
@@ -27,6 +28,8 @@ public class ReceiveManager {
         client.receive(inputPacket);
         addr = inputPacket.getAddress();
         port = inputPacket.getPort();
+        addres = new InetSocketAddress(addr,port);
+
         message = (Message) deserialize(inputPacket.getData());
         return message;
     }
@@ -36,6 +39,10 @@ public class ReceiveManager {
         ObjectInputStream is = new ObjectInputStream(in);
         Serializable mess = (Serializable) is.readObject();
         return mess;
+    }
+
+    public InetSocketAddress getAddres() {
+        return addres;
     }
 
     public InetAddress getAddr() {
