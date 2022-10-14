@@ -3,6 +3,7 @@ import exeptions.IncorrectData;
 import utility.*;
 import java.io.File;
 import java.io.IOException;
+import java.sql.SQLException;
 
 
 public class Server {
@@ -13,6 +14,11 @@ public class Server {
 
     public static void main(String[] args) throws IOException, EmptyElement, IncorrectData, ClassNotFoundException {
         IOManager ioManager = new IOManager();
+        try {
+            SQLCollectionManager sqlCollectionManager = new SQLCollectionManager();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         File parsFile = new File(setter.getEnv("pars","parsPath"));
         CollectionSerializer serializer = new CollectionSerializer(ioManager, parsFile);
         CommandPool commandPool = new CommandPool();

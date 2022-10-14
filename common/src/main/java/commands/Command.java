@@ -20,16 +20,12 @@ public abstract class Command implements Serializable {
     /**
      * @return set command name
      */
-    public String getName() {
-        return name;
-    }
+    public abstract String getName();
 
     /**
      * @return command description
      */
-    public String getDescription() {
-        return description;
-    }
+    public abstract String getDescription();
 
     @Override
     public String toString() {

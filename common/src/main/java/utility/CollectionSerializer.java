@@ -37,7 +37,7 @@ public class CollectionSerializer {
      */
     public Stack<SpaceMarine> collectionDeserializer() throws IOException {
         String input = ioManager.readFile(file);
-        if (input.equals(null))
+        if (input.equals(null) || input.equals(""))
             return null;
         else
 

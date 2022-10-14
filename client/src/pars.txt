@@ -1,1 +1,0 @@
-[{"id":1,"name":"Ivan","coordinates":{"x":50,"y":180},"creationDate":1662995919135,"health":100.0,"achievements":"big cock","category":"ASSAULT","meleeWeapon":"CHAIN_SWORD","chapter":{"name":"TOM1","parentLegion":"LO"}}]

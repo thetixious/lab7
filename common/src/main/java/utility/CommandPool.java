@@ -24,6 +24,8 @@ public class CommandPool {
         upload(new PrintFieldDescendingChapterCommand());
         upload(new ExitCommand());
         upload(new UpdateIdCommand());
+        upload(new SignInCommand());
+        upload(new LogInCommand());
     }
 
     private final HashMap<String, Command> commands = new HashMap<>();

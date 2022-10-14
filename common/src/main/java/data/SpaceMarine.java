@@ -3,7 +3,7 @@ package data;
 import exeptions.IncorrectData;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -14,14 +14,19 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
     private long id; //Значение поля должно быть больше 0, Значение этого поля должно быть уникальным, Значение этого поля должно генерироваться автоматически
     private String name; //Поле не может быть null, Строка не может быть пустой
     private Coordinates coordinates; //Поле не может быть null
-    private Date creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
+    private LocalDateTime creationDate; //Поле не может быть null, Значение этого поля должно генерироваться автоматически
     private double health; //Значение поля должно быть больше 0
     private String achievements; //Поле может быть null
     private AstartesCategory category; //Поле не может быть null
     private MeleeWeapon meleeWeapon; //Поле может быть null
     private Chapter chapter; //Поле не может быть null
+    private String master;
 
-    public SpaceMarine(long id, String name, Coordinates coordinates, Date creationDate, double health, String achievements, AstartesCategory category, MeleeWeapon meleeWeapon, Chapter chapter) {
+    public void setMaster(String master) {
+        this.master = master;
+    }
+
+    public SpaceMarine(long id, String name, Coordinates coordinates, LocalDateTime creationDate, double health, String achievements, AstartesCategory category, MeleeWeapon meleeWeapon, Chapter chapter) {
         this.id = id;
         this.name = name;
         this.coordinates = coordinates;
@@ -33,7 +38,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
         this.chapter = chapter;
     }
 
-    public SpaceMarine(String name, Coordinates coordinates, Date creationDate, double health, String achievements, AstartesCategory category, MeleeWeapon meleeWeapon, Chapter chapter) {
+    public SpaceMarine(String name, Coordinates coordinates, LocalDateTime creationDate, double health, String achievements, AstartesCategory category, MeleeWeapon meleeWeapon, Chapter chapter) {
         this.name = name;
         this.coordinates = coordinates;
         this.creationDate = creationDate;
@@ -88,7 +93,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
      *
      * @return creation date
      */
-    public Date getCreationDate() {
+    public LocalDateTime getCreationDate() {
         return creationDate;
     }
 
@@ -157,7 +162,7 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
      * @param creationDate
      * @throws IncorrectData
      */
-    public void setCreationDate(Date creationDate) throws IncorrectData {
+    public void setCreationDate(LocalDateTime creationDate) throws IncorrectData {
         if (creationDate == null) {
             throw new IncorrectData();
         }
@@ -255,5 +260,9 @@ public class SpaceMarine implements Comparable<SpaceMarine>, Serializable {
     public int compareTo(SpaceMarine o) {
         return (int) (health - o.getHealth());
 
+    }
+
+    public String getMaster() {
+        return master;
     }
 }

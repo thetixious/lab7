@@ -1,4 +1,5 @@
 package utility;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 import exeptions.IncorrectData;
 import commands.Command;
@@ -33,18 +34,17 @@ public class CollectionManager {
 
     public CollectionManager(CommandPool commandPool, CollectionSerializer serializer) {
         this.commandPool = commandPool;
-        collection = new Stack<SpaceMarine>();
+        collection = new Stack<>();
         localDateTime = LocalDateTime.now();
         id = new TreeSet<>();
         this.serializer = serializer;
     }
 
-   /* public CollectionManager() {
-        this.collection = collection;
+    public CollectionManager() {
+        collection = new Stack<>();
         localDateTime = LocalDateTime.now();
         id = new TreeSet<>();
     }
-*/
 
     /**
      * Load collection
@@ -59,7 +59,6 @@ public class CollectionManager {
     /**
      * Add collection instance to collection
      *
-     * @param spaceMarine
      * @return
      * @throws IncorrectData
      */
@@ -256,10 +255,13 @@ public class CollectionManager {
      * Load set id in collection which load from file
      */
     public void startSetId() {
-        for (SpaceMarine spaceMarine : collection) {
-            id.add(spaceMarine.getId());
-        }
+        if (!(Objects.equals(collection, null))) {
 
+
+            for (SpaceMarine spaceMarine : collection) {
+                id.add(spaceMarine.getId());
+            }
+        }
     }
 
     public void saveCollection() throws JsonProcessingException {

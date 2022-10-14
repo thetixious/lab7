@@ -5,6 +5,7 @@ import exeptions.IncorrectData;
 import exeptions.EmptyElement;
 import utility.CollectionManager;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 /**
@@ -20,7 +21,7 @@ public class AddCommand extends Command {
      */
     //объект создается
     public CommandResult run(CollectionManager collectionManager, Object data, SpaceMarine item) throws EmptyElement, IncorrectData {
-            Date date = new Date();
+            LocalDateTime date = LocalDateTime.now();
             item.setCreationDate(date);
             if(collectionManager.addMarine(item)) {
                 return new CommandResult("add", "Элемент добавлен", true);

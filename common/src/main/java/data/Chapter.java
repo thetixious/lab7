@@ -8,6 +8,7 @@ import java.io.Serializable;
  * Chapter with marines
  */
 public class Chapter implements Serializable {
+    private Long id;
     private String name; //field can't be null
     private String parentLegion;
 
@@ -27,6 +28,14 @@ public class Chapter implements Serializable {
             throw new IncorrectData();
         }
         this.name = name;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     /**

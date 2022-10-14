@@ -4,10 +4,7 @@ import commands.CommandResult;
 import data.SpaceMarine;
 import exeptions.EmptyElement;
 import exeptions.IncorrectData;
-import utility.CollectionManager;
-import utility.CollectionSerializer;
-import utility.CommandPool;
-import utility.Message;
+import utility.*;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
@@ -28,10 +25,10 @@ public class ServerManager {
     private ReceiveManager receiveManager;
     private Message message;
     private CommandResult result;
-    ForkJoinPool pool = ForkJoinPool.commonPool();
-    private ExecutorService readRequest = new ForkJoinPool();
     private ExecutorService responseRequest = Executors.newFixedThreadPool(4);
     private ExecutorService sendRequest = Executors.newFixedThreadPool(4);
+    private SQLCollectionManager sqlCollectionManager;
+
 
 
     public ServerManager(InetAddress addr, Integer port, CollectionManager collectionManager, Integer COUNT_OF_TREADS) {

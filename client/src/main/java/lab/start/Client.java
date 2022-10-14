@@ -39,7 +39,6 @@ public class Client extends AbstractClient {
     CollectionSerializer collectionSerializer;
     CollectionManager collectionManager;
     DatagramChannel client;
-    InetAddress host;
     InetSocketAddress serverAddr;
     SendManager sendManager;
     ReceiveManager receiveManager;
@@ -53,6 +52,7 @@ public class Client extends AbstractClient {
         collectionSerializer = new CollectionSerializer(ioManager, new File(path));
         consoleManager = new ConsoleManager(commandPool, ioManager, sendManager, receiveManager);
         setCollectionManager();
+
     }
 
     @Override

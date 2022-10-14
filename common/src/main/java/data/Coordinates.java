@@ -8,7 +8,7 @@ import java.io.Serializable;
  * Coordinates of SpaceMarine
  */
 public class Coordinates implements Serializable {
-
+    private Long id;
     private Integer x; //can't be null
     private Integer y; //must be more -84 and can't be null
 
@@ -24,6 +24,14 @@ public class Coordinates implements Serializable {
      */
     public Integer getX() {
         return x;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     /**
