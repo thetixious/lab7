@@ -1,15 +1,19 @@
 import com.fasterxml.jackson.core.JsonProcessingException;
 import commands.Command;
+import commands.CommandEnvironment;
 import commands.CommandResult;
 import data.SpaceMarine;
 import exeptions.EmptyElement;
 import exeptions.IncorrectData;
+import org.postgresql.util.OSUtil;
 import utility.*;
 
 import java.io.IOException;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
@@ -21,28 +25,26 @@ public class ServerManager {
     private Integer port;
     private InetAddress addr;
     private Boolean serverState;
-    private SendManager sendManager;
     private ReceiveManager receiveManager;
     private Message message;
-    private CommandResult result;
     private ExecutorService responseRequest = Executors.newFixedThreadPool(4);
     private ExecutorService sendRequest = Executors.newFixedThreadPool(4);
     private SQLCollectionManager sqlCollectionManager;
+    private SQLUserManager sqlUserManager;
 
 
-
-    public ServerManager(InetAddress addr, Integer port, CollectionManager collectionManager, Integer COUNT_OF_TREADS) {
+    public ServerManager(InetAddress addr, Integer port, SQLUserManager sqlUserManager, SQLCollectionManager sqlCollectionManager, Connection connection) {
         this.port = port;
         this.addr = addr;
-        this.collectionManager = collectionManager;
         serverState = true;
+        this.sqlUserManager = sqlUserManager;
+        this.sqlCollectionManager = sqlCollectionManager;
 
     }
 
-    public void run() throws IOException, ClassNotFoundException {
-
+    public void run() throws IOException, ClassNotFoundException, SQLException, IncorrectData {
         DatagramSocket server = null;
-
+        collectionManager =  sqlCollectionManager.getCollectionManager(); // ghb r
         try {
             server = new DatagramSocket(port);
             receiveManager = new ReceiveManager(server);
@@ -62,14 +64,13 @@ public class ServerManager {
 
     public CommandResult execute(Message mes) {
         Command curCommand = mes.getCommand();
-        Object data = mes.getData();
-        SpaceMarine item = mes.getSpaceMarine();
-
+        CommandEnvironment environment = new CommandEnvironment(collectionManager, sqlCollectionManager,mes.getData(),sqlUserManager,mes.getUser(),mes.getSpaceMarine());
         try {
-            CommandResult commandResult = curCommand.run(collectionManager, data, item);
-            collectionManager.saveCollection();
+            sqlUserManager.refreshUsersData();
+            CommandResult commandResult = curCommand.run(environment);
             return commandResult;
-        } catch (EmptyElement | IncorrectData | JsonProcessingException e) {
+        } catch (EmptyElement | IncorrectData | SQLException e) {
+
             return new CommandResult("error", "Проблема с полученными данным", false);
         }
     }
@@ -89,7 +90,7 @@ public class ServerManager {
                 sendRequest.submit(() -> sendManager.sendMessage(commandResult));
             });
         }
-    }
 
+    }
 
 }

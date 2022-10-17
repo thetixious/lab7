@@ -3,7 +3,8 @@ package commands;
 import data.SpaceMarine;
 import exeptions.EmptyElement;
 import exeptions.IncorrectData;
-import utility.CollectionManager;
+
+import java.util.Objects;
 
 /**
  * "show" command, show whole elements from collection
@@ -17,14 +18,15 @@ public class ShowCommand extends Command {
      * @throws EmptyElement
      * @throws IncorrectData
      * @return
+     * @param environment
      */
 
     @Override
-    public CommandResult run(CollectionManager collectionManager, Object data, SpaceMarine item) throws EmptyElement, IncorrectData {
+    public CommandResult run(CommandEnvironment environment) throws EmptyElement, IncorrectData {
 
-        if (collectionManager.getSize() == 0)
+        if (Objects.equals(environment.getCollectionManager().getCollection(),null))
             return new CommandResult("show","Коллекция пуста",false);
-            for (SpaceMarine spaceMarine : collectionManager.getCollection())
+            for (SpaceMarine spaceMarine :environment.getCollectionManager().getCollection())
                 buf.append(spaceMarine + "\n");
             return new CommandResult("show", buf,true);
     }

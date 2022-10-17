@@ -1,29 +1,74 @@
 package utility;
 
+import commands.CommandResult;
 import data.Chapter;
 import data.Coordinates;
+import data.MeleeWeapon;
 import data.SpaceMarine;
 import exeptions.EmptyElement;
 import exeptions.IncorrectData;
 
-import java.io.PrintWriter;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 
 public class SQLCollectionManager {
+    private Collection collection;
+    private CollectionManager collectionManager;
+    private final Connection connection;
 
-    public SQLCollectionManager() throws SQLException, EmptyElement, IncorrectData {
-
-        Connection connection = DriverManager.getConnection("jdbc:postgresql://localhost:5432/postgres", "postgres", "qwerty");
-        TableCreator.creatUserTable(connection);
-        String prp = "INSERT INTO users (login, password) VALUES (?,?,?)";
-        PreparedStatement com = connection.prepareStatement(prp);
+    public SQLCollectionManager(Connection connection) throws SQLException, EmptyElement, IncorrectData {
+        this.connection = connection;
         TableCreator.creatChapterTable(connection);
         TableCreator.creatCoordinatesTable(connection);
         TableCreator.creatSpaceMarineTable(connection);
 
 
+    }
+
+    public CollectionManager getCollectionManager() throws SQLException, IncorrectData {
+        deserialize();
+        return collectionManager;
+    }
+
+    public void deserialize() throws SQLException, IncorrectData {
+        collectionManager = new CollectionManager(new CommandPool());
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery("SELECT * FROM SpaceMarine");
+        while (resultSet.next()) {
+            collectionManager.addMarine(getSpaceMarine(resultSet));
+        }
+
+    }
+
+    public SpaceMarine getSpaceMarine(ResultSet result) throws SQLException, IncorrectData {
+        DateTimeFormatter form = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        SpaceMarine spaceMarine = new SpaceMarine();
+        spaceMarine.setId(result.getLong("id"));
+        spaceMarine.setCreationDate(LocalDateTime.parse(result.getString("creation_date"), form));
+        spaceMarine.setMeleeWeapon(MeleeWeapon.valueOf(result.getString("melee_weapon").toUpperCase()));
+        spaceMarine.setAchievements(result.getString("achievements"));
+        spaceMarine.setHealth(Double.parseDouble(result.getString("health")));
+        spaceMarine.setMaster(result.getString("master"));
+
+        PreparedStatement statement;
+        result.getString("chapter");
+        String getChapter = "SELECT * FROM chapter WHERE id=?";
+        statement = connection.prepareStatement(getChapter);
+        statement.setLong(1, result.getLong("chapter"));
+        ResultSet resChapter = statement.executeQuery();
+        resChapter.next();
+        spaceMarine.setChapter(new Chapter(resChapter.getLong("id"),
+                resChapter.getString("name"),
+                resChapter.getString("parent_legion")));
+        String getCoord = "SELECT * FROM coordinates WHERE id=?";
+        statement = connection.prepareStatement(getCoord);
+        statement.setInt(1, result.getInt("coordinates"));
+        ResultSet resCoord = statement.executeQuery();
+        resCoord.next();
+        spaceMarine.setCoordinates(new Coordinates(resCoord.getLong("id"), resCoord.getInt("x"), resCoord.getInt("y")));
+        return spaceMarine;
     }
 
     public static void loaderChapter(PreparedStatement statement, Chapter chapter) throws SQLException {
@@ -42,7 +87,10 @@ public class SQLCollectionManager {
 
     public static void loaderSpaceMarine(PreparedStatement statement, SpaceMarine spaceMarine) throws SQLException {
         DateTimeFormatter form = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-
+        System.out.println(spaceMarine.getCoordinates().getId());
+        System.out.println(spaceMarine.getChapter().getId());
+        System.out.println(spaceMarine.getCategory().toString());
+        System.out.println(spaceMarine.getMeleeWeapon().toString());
         statement.setString(1, spaceMarine.getName());
         statement.setLong(2, spaceMarine.getCoordinates().getId());
         statement.setTimestamp(3, Timestamp.valueOf(spaceMarine.getCreationDate().format(form)));
@@ -54,7 +102,7 @@ public class SQLCollectionManager {
         statement.setString(9, spaceMarine.getMaster());
     }
 
-    public static void addToBD(SpaceMarine spaceMarine, Connection connection) {
+    public void addToBD(SpaceMarine spaceMarine) {
         final String addSpaceMarine = "INSERT INTO SpaceMarine VALUES (" +
                 "default,?,?,?,?,?,?,?,?,?) RETURNING id";
         final String addCoordinates = "INSERT INTO Coordinates VALUES (" +
@@ -83,4 +131,7 @@ public class SQLCollectionManager {
         }
     }
 
+    public void clearCollection() {
+
+    }
 }

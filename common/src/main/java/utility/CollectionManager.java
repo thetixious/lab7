@@ -7,6 +7,9 @@ import exeptions.EmptyElement;
 import data.Chapter;
 import data.SpaceMarine;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
@@ -22,8 +25,13 @@ public class CollectionManager {
     private final HashSet<Double> healthCollection = new HashSet<>();
     private CommandPool commandPool = null;
     private CollectionSerializer serializer;
+    SQLCollectionManager sqlCollectionManager;
+    Connection connection;
 
 
+
+
+/*
     public CollectionManager(CommandPool commandPool, CollectionSerializer serializer, Stack<SpaceMarine> collection) {
         this.serializer = serializer;
         this.collection = collection;
@@ -31,13 +39,12 @@ public class CollectionManager {
         id = new TreeSet<>();
         this.commandPool = commandPool;
     }
-
-    public CollectionManager(CommandPool commandPool, CollectionSerializer serializer) {
+*/
+    public CollectionManager(CommandPool commandPool) {
         this.commandPool = commandPool;
         collection = new Stack<>();
         localDateTime = LocalDateTime.now();
         id = new TreeSet<>();
-        this.serializer = serializer;
     }
 
     public CollectionManager() {
@@ -45,6 +52,8 @@ public class CollectionManager {
         localDateTime = LocalDateTime.now();
         id = new TreeSet<>();
     }
+
+
 
     /**
      * Load collection

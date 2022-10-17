@@ -1,9 +1,7 @@
 package commands;
 
-import data.SpaceMarine;
 import exeptions.IncorrectData;
 import exeptions.EmptyElement;
-import utility.CollectionManager;
 
 /**
  * "clear" command, clear whole collection
@@ -17,11 +15,13 @@ public class ClearCommand extends Command {
      * @return
      * @throws EmptyElement
      * @throws IncorrectData
+     * @param environment
      */
     @Override
-    public CommandResult run(CollectionManager collectionManager, Object data, SpaceMarine item) throws EmptyElement, IncorrectData {
+    public CommandResult run(CommandEnvironment environment) throws EmptyElement, IncorrectData {
 
-        collectionManager.clearCollection();
+        environment.getCollectionManager().clearCollection();
+        environment.getCollectionManager().clearCollection();
         return new CommandResult("clear", "Коллекция пуста, в ней удалены все элементы", true);
 
     }

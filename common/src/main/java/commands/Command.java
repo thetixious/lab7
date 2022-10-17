@@ -1,10 +1,8 @@
 package commands;
 
 
-import data.SpaceMarine;
 import exeptions.IncorrectData;
 import exeptions.EmptyElement;
-import utility.CollectionManager;
 
 import java.io.Serializable;
 
@@ -15,7 +13,7 @@ public abstract class Command implements Serializable {
     private String name;
     private String description;
 
-    public abstract CommandResult run(CollectionManager collectionManager, Object data, SpaceMarine item) throws EmptyElement, IncorrectData;
+    public abstract CommandResult run(CommandEnvironment environment) throws EmptyElement, IncorrectData;
 
     /**
      * @return set command name

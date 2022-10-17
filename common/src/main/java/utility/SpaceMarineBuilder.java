@@ -21,8 +21,9 @@ public class SpaceMarineBuilder {
 
     /**
      * Set name
-     * @throws IncorrectData
+     *
      * @return
+     * @throws IncorrectData
      */
     public SpaceMarineBuilder setName() throws IncorrectData {
         String name;
@@ -34,9 +35,10 @@ public class SpaceMarineBuilder {
 
     /**
      * Set Coordinates
+     *
+     * @return
      * @throws EmptyElement
      * @throws IncorrectData
-     * @return
      */
     public SpaceMarineBuilder setCoordinates() throws EmptyElement, IncorrectData {
         Coordinates coordinates;
@@ -48,6 +50,7 @@ public class SpaceMarineBuilder {
 
     /**
      * Enter x
+     *
      * @return x
      * @throws EmptyElement
      */
@@ -60,7 +63,7 @@ public class SpaceMarineBuilder {
             if (input.equals("")) throw new EmptyElement();
             x = Integer.parseInt(input);
             return x;
-        } catch (NumberFormatException | EmptyElement e) {
+        } catch (NumberFormatException e) {
             ioManager.println("Введите корректные данные");
             return enterX();
         }
@@ -69,6 +72,7 @@ public class SpaceMarineBuilder {
 
     /**
      * Enter y
+     *
      * @return y
      * @throws EmptyElement
      */
@@ -81,7 +85,7 @@ public class SpaceMarineBuilder {
             if (input.equals("")) throw new EmptyElement();
             y = Integer.parseInt(input);
             return y;
-        } catch (NumberFormatException | EmptyElement e) {
+        } catch (NumberFormatException e) {
             ioManager.println("Введите корректные данные");
             return enterY();
         }
@@ -90,9 +94,10 @@ public class SpaceMarineBuilder {
 
     /**
      * Set health
+     *
+     * @return
      * @throws EmptyElement
      * @throws IncorrectData
-     * @return
      */
     public SpaceMarineBuilder setHealth() throws EmptyElement, IncorrectData {
         String input;
@@ -113,9 +118,10 @@ public class SpaceMarineBuilder {
 
     /**
      * set Achievements
+     *
+     * @return
      * @throws EmptyElement
      * @throws IncorrectData
-     * @return
      */
     public SpaceMarineBuilder setAchievements() throws EmptyElement, IncorrectData {
 
@@ -126,6 +132,7 @@ public class SpaceMarineBuilder {
             if (achievements.equals("")) throw new EmptyElement();
             MarineItem.setAchievements(achievements);
             return this;
+
         } catch (EmptyElement e) {
             ioManager.println("Введите корректные данные");
             return setAchievements();
@@ -134,9 +141,10 @@ public class SpaceMarineBuilder {
 
     /**
      * set Category
+     *
+     * @return
      * @throws EmptyElement
      * @throws IncorrectData
-     * @return
      */
     public SpaceMarineBuilder setCategory() throws EmptyElement, IncorrectData {
         AstartesCategory category;
@@ -148,7 +156,7 @@ public class SpaceMarineBuilder {
             category = AstartesCategory.valueOf(input);
             MarineItem.setCategory(category);
             return this;
-        } catch (IllegalArgumentException | EmptyElement e) {
+        } catch (IllegalArgumentException e) {
             ioManager.println("Данные не соответствуют требованиям");
             return setCategory();
 
@@ -158,16 +166,20 @@ public class SpaceMarineBuilder {
 
     /**
      * set MeleeWeapon
-     * @throws IncorrectData
+     *
      * @return
+     * @throws IncorrectData
      */
     public SpaceMarineBuilder setMeleeWeapon() throws IncorrectData {
         MeleeWeapon meleeWeapon;
         String input;
         try {
+
             ioManager.println("Выберите оружие из предложенного списка --- " + MeleeWeapon.Listing());
             input = new Scanner(System.in).nextLine();
             if (input.equals("")) throw new EmptyElement();
+
+
             meleeWeapon = MeleeWeapon.valueOf(input);
             MarineItem.setMeleeWeapon(meleeWeapon);
             return this;
@@ -180,8 +192,9 @@ public class SpaceMarineBuilder {
 
     /**
      * set Chapter
-     * @throws IncorrectData
+     *
      * @return
+     * @throws IncorrectData
      */
     public SpaceMarineBuilder setChapter() throws IncorrectData {
         Chapter chapter;
@@ -194,6 +207,7 @@ public class SpaceMarineBuilder {
 
     /**
      * set Chapter name
+     *
      * @return
      */
     private String setChapterName() {
@@ -203,10 +217,12 @@ public class SpaceMarineBuilder {
             input = new Scanner(System.in).nextLine();
             if (input.equals("")) throw new EmptyElement();
             return input;
+
         } catch (EmptyElement e) {
             ioManager.println("Введите корректные данные");
             return setChapterName();
         }
+
     }
 
     /**
@@ -223,10 +239,13 @@ public class SpaceMarineBuilder {
             ioManager.println("Введите корректные данные");
             return setChapterParentLegion();
         }
+
+
     }
 
     /**
      * Build object
+     *
      * @return spaceMarine instance
      */
     public SpaceMarine build() {

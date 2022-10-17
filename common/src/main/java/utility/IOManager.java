@@ -6,17 +6,16 @@ import java.io.*;
 /**
  * Class for work with input and output
  */
-public class IOManager {
+public class IOManager  {
     private PrintWriter writer;
 
+    public IOManager() {
+    }
 
     public IOManager(PrintWriter writer) {
         this.writer = writer;
     }
 
-    public IOManager() {
-
-    }
 
 
     /**

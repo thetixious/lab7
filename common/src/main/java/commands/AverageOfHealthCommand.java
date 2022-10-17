@@ -1,9 +1,7 @@
 package commands;
 
-import data.SpaceMarine;
 import exeptions.IncorrectData;
 import exeptions.EmptyElement;
-import utility.CollectionManager;
 
 /**
  * "average_health" command, print average health value in collection
@@ -12,9 +10,9 @@ public class AverageOfHealthCommand extends Command {
 
 
     @Override
-    public CommandResult run(CollectionManager collectionManager, Object data, SpaceMarine item) throws EmptyElement, IncorrectData {
+    public CommandResult run(CommandEnvironment environment) throws EmptyElement, IncorrectData {
         try {
-            return new CommandResult("average_health",collectionManager.getAverageHealth(),true);
+            return new CommandResult("average_health",environment.getCollectionManager().getAverageHealth(),true);
             //ioManager.println(collectionManager.getAverageHealth());
 
         } catch (IllegalArgumentException e) {

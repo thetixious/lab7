@@ -1,10 +1,8 @@
 package commands;
 
 import data.Chapter;
-import data.SpaceMarine;
 import exeptions.IncorrectData;
 import exeptions.EmptyElement;
-import utility.CollectionManager;
 
 /**
  * "print_chapter" command,  Print descending chapter's fields
@@ -18,14 +16,15 @@ public class PrintFieldDescendingChapterCommand extends Command {
      * @return
      * @throws EmptyElement
      * @throws IncorrectData
+     * @param environment
      */
     @Override
-    public CommandResult run(CollectionManager collectionManager, Object data, SpaceMarine item) throws EmptyElement, IncorrectData {
+    public CommandResult run(CommandEnvironment environment) throws EmptyElement, IncorrectData {
 
-        if (collectionManager.getSize() == 0)
+        if (environment.getCollectionManager().getSize() == 0)
             return new CommandResult("print_chapter", "Коллекция пуста", false);
 
-        for (Chapter chapter : collectionManager.printChapterFields())
+        for (Chapter chapter : environment.getCollectionManager().printChapterFields())
             buf.append(chapter + "\n");
         return new CommandResult("print_chapter", buf, true);
     }

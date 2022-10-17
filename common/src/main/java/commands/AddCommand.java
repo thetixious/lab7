@@ -1,33 +1,31 @@
 package commands;
 
-import data.SpaceMarine;
 import exeptions.IncorrectData;
 import exeptions.EmptyElement;
-import utility.CollectionManager;
 
 import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * "add" command, add SpaceMarine instance in collection
  */
 public class AddCommand extends Command {
 
-
-
     /**
      * execute command
+     *
+     * @param environment
      * @return
      */
     //объект создается
-    public CommandResult run(CollectionManager collectionManager, Object data, SpaceMarine item) throws EmptyElement, IncorrectData {
-            LocalDateTime date = LocalDateTime.now();
-            item.setCreationDate(date);
-            if(collectionManager.addMarine(item)) {
-                return new CommandResult("add", "Элемент добавлен", true);
-            }
-            else
-                return new CommandResult("add", "Элемент не добавлен", false);
+    public CommandResult run(CommandEnvironment environment) throws EmptyElement, IncorrectData {
+
+        LocalDateTime date = LocalDateTime.now();
+        environment.getSpaceMarine().setCreationDate(date);
+        if (environment.getCollectionManager().addMarine(environment.getSpaceMarine())) {
+            environment.getSqlCollectionManager().addToBD(environment.getSpaceMarine());
+            return new CommandResult("add", "Элемент добавлен", true);
+        } else
+            return new CommandResult("add", "Элемент не добавлен", false);
     }
 
     @Override

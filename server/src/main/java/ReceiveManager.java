@@ -29,8 +29,8 @@ public class ReceiveManager {
         addr = inputPacket.getAddress();
         port = inputPacket.getPort();
         addres = new InetSocketAddress(addr,port);
-
         message = (Message) deserialize(inputPacket.getData());
+        System.out.println(message.getCommand().getName());
         return message;
     }
 

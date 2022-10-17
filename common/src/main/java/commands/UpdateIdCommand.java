@@ -3,7 +3,6 @@ package commands;
 import data.SpaceMarine;
 import exeptions.IncorrectData;
 import exeptions.EmptyElement;
-import utility.CollectionManager;
 
 /**
  * "update" command, update collection item by id
@@ -16,21 +15,22 @@ public class UpdateIdCommand extends Command {
      * @return
      * @throws EmptyElement
      * @throws IncorrectData
+     * @param environment
      */
     @Override
-    public CommandResult run(CollectionManager collectionManager, Object data, SpaceMarine newSpaceMarine) throws EmptyElement, IncorrectData {
+    public CommandResult run(CommandEnvironment environment) throws EmptyElement, IncorrectData {
 
         try {
-            String[] str = (String[]) data;
+            String[] str = (String[]) environment.getData();
             Long id = Long.parseLong(str[0]);
-            if (collectionManager.getSize() == 0)
+            if (environment.getCollectionManager().getSize() == 0)
                 return new CommandResult("update", "коллекция пуста", false);
             else {
-                SpaceMarine findMarine = collectionManager.findElementById(id);
+                SpaceMarine findMarine = environment.getCollectionManager().findElementById(id);
                 if (findMarine == null)
                     return new CommandResult("update", "в коллекции нет элемента с данным id", false);
                 else {
-                    collectionManager.addMarine(newSpaceMarine);
+                    environment.getCollectionManager().addMarine(environment.getSpaceMarine());
                     return new CommandResult("update", "____Элемент обновлен____", true);
                 }
             }

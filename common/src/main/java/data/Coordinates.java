@@ -30,6 +30,12 @@ public class Coordinates implements Serializable {
         return id;
     }
 
+    public Coordinates(Long id, Integer x, Integer y) {
+        this.id = id;
+        this.x = x;
+        this.y = y;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }

@@ -18,6 +18,12 @@ public class Chapter implements Serializable {
     }
     public Chapter(){}
 
+    public Chapter(Long id, String name, String parentLegion) {
+        this.id = id;
+        this.name = name;
+        this.parentLegion = parentLegion;
+    }
+
     /**
      * set name
      * @param name

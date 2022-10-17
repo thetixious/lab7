@@ -8,6 +8,11 @@ import java.util.HashMap;
  * Pool of commands
  */
 public class CommandPool {
+    SQLUserManager sqlUserManager;
+
+
+
+
     public CommandPool() {
 
         upload(new AddCommand());

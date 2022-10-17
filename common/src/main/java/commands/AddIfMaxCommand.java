@@ -2,8 +2,6 @@ package commands;
 
 import exeptions.IncorrectData;
 import exeptions.EmptyElement;
-import data.SpaceMarine;
-import utility.CollectionManager;
 
 /**
  * "add_if_max" command, add item in collection if item bigger than max element in collection
@@ -11,16 +9,16 @@ import utility.CollectionManager;
 public class AddIfMaxCommand extends Command {
     /**
      * execute command
-     * @param arguments
+     * @param environment
      * @throws IncorrectData
      * @throws EmptyElement
      * @return
      */
     @Override
-    public CommandResult run(CollectionManager collectionManager, Object data, SpaceMarine candidate) throws IncorrectData, EmptyElement {
+    public CommandResult run(CommandEnvironment environment) throws IncorrectData, EmptyElement {
 
 
-            if (collectionManager.AllowAddIfMax(candidate))
+            if (environment.getCollectionManager().AllowAddIfMax(environment.getSpaceMarine()))
                 return new CommandResult("add_if_max", "Объект добавлен в коллекцию", true);
             else
                 return new CommandResult("add_if_max", "Объект не добавлен в коллекцию", false);

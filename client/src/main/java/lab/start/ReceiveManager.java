@@ -27,7 +27,7 @@ public class ReceiveManager {
         while (buf.position() == 0) {
             addr = channel.receive(buf);
             cringeTimeCounter+=1;
-            if (cringeTimeCounter>100000 && Objects.equals(addr,null))
+            if (cringeTimeCounter>10000000 && Objects.equals(addr,null))
                 return new CommandResult("error","Сервер не отвечает" + cringeTimeCounter,false);
         }
         result = (CommandResult) messageSerializer.deserialize(buf.array());
